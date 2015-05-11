@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searchPage</title>
+    <link href="bootstrap-3/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+    ul{
+    	list-style: none;
+    	margin: 0px;
+    	margin-top:－5px;
+    	padding-top: 8px;
+
+    }
+    ul li{
+    	height: 25px;
+    	line-height: 25px;
+    	margin-left: -40px;
+    	text-align: left;
+    	padding-left: 10px;
+    }
+    ul#matched li:hover{
+    	background-color: #eee;
+    }
+    #result{
+    	width: 300px;
+    	border: 1px solid #aaa;
+    	border-top: none;
+    	margin-left: 100px;
+    	border-radius: 4px;
+    }
+    .main{
+    	margin: 100px auto;
+    }
+    .main .form-inline{
+    	text-align: center;
+    }
+    .main .form-inline .form-control{
+    	width:300px;
+    }
+
+    </style>
+  </head>
+  <body>
+	  <div class="main">
+	    <form class="form-inline" autocomplete="off">
+	 	 <div class="form-group">
+	    	<label for="searchInput">请输入搜索内容</label>
+		    <input type="text" class="form-control" id="searchInput" placeholder="Jane Doe" >
+		    <div id="result" style="display:none">
+		    	
+		    </div>
+		  </div>
+		</form>
+	</div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="bootstrap-3/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    function ajaxFunction()
+	 {
+	 var xmlHttp;
+	 try
+	    {
+	    xmlHttp=new XMLHttpRequest();
+	    }
+	 catch (e)
+	    {
+	  // Internet Explorer
+	   try{
+	      xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	      }
+	   catch (e){
+		try{
+	         xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	    }catch (e){
+	         alert("您的浏览器不支持AJAX！");
+	         return false;
+	         }
+	      }
+	    }
+	 }
+
+	 function showOthers(){
+	 	if(event.keyCode==38||event.keyCode==40){
+	 		return;
+	 	}
+	 	var inputTxt=$("searchInput").value;
+	 	//alert("It works!");
+	 	var mymatch=new Array("123","1234abcd","123456bcde","abcdef");
+	 	var matched=new Array();
+
+	 	for(var i=0;i<mymatch.length;i++){
+	 		var mystr=mymatch[i].substr(0,inputTxt.length);
+	 		if(mystr==inputTxt){
+	 			matched.push(mymatch[i]);
+	 		}
+	 	}
+
+	 	if(matched.length!=0){
+
+	 		var ulElement=document.createElement("ul");
+	 		ulElement.id="matched";
+	 		ulElement.innerHTML="";
+
+	 		for(var i=0;i<matched.length;i++){
+	 			ulElement.innerHTML+="<li>"+matched[i]+"</li>";
+	 		}
+	 		if($("matched")){
+	 			$("result").removeChild($("matched"));
+	 		}
+			$("result").appendChild(ulElement);
+			$("result").style.display="block";
+
+			//给每个li添加点击事件
+			for(var i=0;i<$("matched").childNodes.length;i++){
+				
+				$("matched").childNodes[i].addEventListener("mouseover",onmouseover,false);
+				$("matched").childNodes[i].addEventListener('click',choose,false);
+
+			}
+		}
+		else{
+			//alert("works");
+			$("result").style.display="none";
+		}
+
+		//choose();
+	 }
+
+	 //当前选中的项
+	  var choIndex=-1;
+
+	
+
+
+
+	 function choose(){
+	 	$("searchInput").value=this.innerText;
+	 	$("result").style.display="none";
+	 }
+	 //鼠标悬停
+	 function onmouseover(){
+	 	//alert(index);
+	 	
+	 	var matchedItems=$("matched").childNodes;
+	 	for(var i=0;i<matchedItems.length;i++){
+	 		matchedItems[i].style.backgroundColor="#fff";
+	 		if(this.innerText==matchedItems[i].innerText){
+	 			choIndex=i;
+	 		}
+	 	}
+	 	//alert(choIndex);
+	 	this.style.backgroundColor="#eee";
+	 }
+
+	//键盘按键
+	 function chooseByKey(){
+	 	//alert(event.keyCode);
+	 	if($("matched")){
+				
+	 		var matchedItems=$("matched").childNodes;
+	 	
+	 		for(var i=0;i<matchedItems.length;i++){
+	 			matchedItems[i].style.backgroundColor="#fff";
+	 		}
+			switch(event.keyCode){
+		 		case 38:
+			 		//alert("up");
+			 		if(choIndex==-1){
+			 			//alert("ok");
+			 			choIndex=matchedItems.length-1;
+			 		}else{
+			 			choIndex-=1;
+			 		}
+			 		break;
+
+		 		case 40:
+			 		//alert("down");
+			 		if(choIndex==matchedItems.length-1){
+				 		choIndex=-1;
+				 	}else{
+				 		choIndex+=1;
+				 	}
+				 	
+			 		break;
+		 	}
+		 	if(choIndex!=-1 && choIndex!=matchedItems.length){
+		 		matchedItems[choIndex].style.backgroundColor="#eee";
+				$("searchInput").value=matchedItems[choIndex].innerText;
+			}
+	 	}
+	 	//alert(event.keyCode);
+	 }
+	 
+	 function $(str){
+	 	return document.getElementById(str);
+	 }
+
+	 $("searchInput").onkeyup=showOthers;
+	 document.onkeydown=chooseByKey;
+	// $("matched").childNodes[0].onclick=alert("ok");
+	 //window.choose();
+    </script>
+  </body>
+</html>
