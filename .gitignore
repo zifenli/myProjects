@@ -1,2 +1,4 @@
-reademe.txt
-
+readme.txt
+.gitignore
+bootstrap-3/
+.DS_Store
