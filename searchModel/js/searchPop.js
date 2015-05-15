@@ -232,7 +232,7 @@ var data={
 		{"name":"abcde","phonenumber":"151","email":"abcde@gamil.com"}
 	]};
 var needarry=new Array("name","phonenumber");
-var mypop=new SearchPop("searchInput","result");
+var mypop=new SearchPop("se  archInput","result");
 
 mypop.inputObj.onkeyup=function(){
 
