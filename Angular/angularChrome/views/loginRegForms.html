@@ -1,0 +1,41 @@
+<div ng-show="showLoginForm">
+    <form ng-submit="runLogin()">
+    	<input type="text" name="name">
+    	<input type="submit">
+    </form>
+</div>
+<div ng-show="!showLoginForm">
+    <form ng-submit="runRegister()"></form>
+</div>
+<div ng-class="{red:5<x&&x<=7,green:7<x&&x<=10}" ng-if="x>5">the number is:{{x}}....You won!</div>
+<button ng-click="x=generateNumber()">generate number</button>
+<select ng-model="city" ng-options="city.name for city in cities">
+	<!--ng-select和ng-model和ng-option一同使用-->
+</select>
+ Best City: {{ city.name }}
+ <!--表单-->
+ <form name="signup_form"
+ 	   ng-submit="submitForm()" novalidate>
+ 	   <div ng-repeat="field in fields"
+ 	        ng-form="signup_form_input">
+ 	        <input type="text"
+ 	        	   name="dynamic_input"
+ 	        	   ng-required="field.isRequired"
+ 	        	   ng-model="field.name"
+ 	        	   placeholder="{{field.placeholder}}"/>
+ 	        <div 
+ 	        	ng-show="signup_form_input.dynamic_input.$dirty&&signup_form_input.dynamic_input.$invalid">
+ 	        	<span class="error" ng-show="signup_form_input.dynamic_input.$error.required">
+ 	        		this field is required!
+ 	        	</span>
+ 	        	
+ 	        </div>
+ 	   </div>
+ 	   <button type="submit"
+ 	   		   ng-disabled="signup_form.$invalid">submit all</button>
+ 	
+ </form>
+ <input type="text"
+ 		ng-model="equation.x"
+ 		ng-change="change()"/>
+ <code>{{equation.output}}</code>

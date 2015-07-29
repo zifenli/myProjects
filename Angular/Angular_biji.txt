@@ -1,0 +1,169 @@
+第五章：控制器
+只需创建控制器作用域中的函数，就能创建可以在视图中使用的自定义操作；
+控制器并不适合用来执行DOM操作、格式化或数据操作，以及除存储数据模型之外的状态维护操作，是视图和￥scope之间的饿桥梁
+$scope对象用来从数据模型向视图传递信息
+设计良好的应用会将复杂的逻辑放到指令和服务中。通过使用指令和服务，我们可以将控制器重构成一个轻量且更易维护的形式
+第六章 表达式
+1、解析表达式
+2、插值字符串（$interpolate）
+第七章 过滤器
+路由：根据访问的路径的不同展示不同的view，view是由不同的控制器显示的
+双向数据绑定：ng-bind
+
+服务（$watch、$http、$parse、$interpolate、$interpolateProvider（可以修改{{,}}））
+ 模型指的是$scope上保存的包含瞬时状态数据的JavaScript对象。持久化状态的数据应该保存到服务中，服务的作用是处理模型的持久化。
+包括内置和自定义
+内置：直接引用即可
+自定义：注册——引用
+注册
+angular.module('myApp.services', [])
+.factory('githubService', function() {
+   	 //属性和方法
+    // 我们的第一个服务，返回serviceInstance;
+});
+使用
+angular.module('myApp', ['myApp.services'])
+.controller('ServiceController', function($scope, githubService) {
+    // 可以在对象上调用events函数
+    $scope.events = githubService.events('auser');
+});
+
+七、过滤器：内置和自定义
+
+格式化数据，在{{ }}中使用|来调用，如{{lizifen|upercase}},也可以在js中调用，如果有参数，则需要在过滤器后面加“：参数”
+1、内置
+currency,date,filter(可以从给定数组中选择一个子集，并将其生成一个新数组返回),json(将json或js转换成字符串),limitTo,lowercase,number, orderBy(对数组进行排序),uppercase
+2、自定义：创建——使用
+（1）创建：在Angular的module中调用filter函数
+angular.module('myApp.filters', [])
+ .filter('capitalize', function() {
+   return function(input) {};
+});
+（2）使用：{{ 'ginger loves dog treats' | lowercase | capitalize }}
+3、表单验证
+<form name="form" nonvalidate></form>
+必须有一个name属性，nonvalidate屏蔽浏览器的默认验证行为
+（1）可验证：必填项，最小长度，最大长度，email，number，模式匹配，正则，url
+（2）在表单中控制变量
+可以通过模式formName.inputFieldName.property，访问ng-model中定义的属性值
+（3）有用的css'
+.ng-pristine {}——$pristine
+.ng-dirty {}-——$dirty
+.ng-valid {}---$valid
+.ng-invalid {}---$invalid
+.ng-error {}---$error
+使用ngMessages可以使代码更加简洁
+八、指令
+通过模块的directive()方法来注册一个新的指令
+格式如下：
+angular.module('myApp',[])
+.directive('myDirective', function() {
+    return {
+        restrict: 'E',
+        template: '<a href="http://google.com">
+        Click me to go to Google</a>'
+    };
+});
+九、内置指令
+ng-href；
+ng-src；
+ng-disabled；
+ng-checked；
+ng-readonly；
+ng-selected；
+ng-class；
+ng-style
+2、在指令中添加子作用域
+ng-include
+
+ng-switch
+基本用法：
+ng-switch=""
+ng-switch-default
+ng-switch-when=""
+
+ng-repeat
+$index,$first,$last,$middle,$enen,$odd
+ng-view
+ng-controller
+ng-if
+十、指令详解
+定义指令：angular.application('myApp', [])
+.directive('myDirective', function() {
+    // 一个指令定义对象
+    return {
+        // 通过设置项来定义指令，在这里进行覆写
+    };
+});
+指令中得scope进行详解：
+当scope设置为true时，会从父作用域继承并创建一个新的作用域，既然是继承，那当然可以访问父亲的一些属性和方法咯！
+当scope设置为{}时，是创建了一个隔离作用域，此时指令的模板无法访问外部作用域了
+十一、angularjs模块加载
+配置和运行模块
+十二、路由
+十三、依赖注入
+三种方式：推断式注入、显式注入、行内注入
+十四、服务
+服务提供了一种能在应用的整个生命周期内保持数据的方法，它能够在控制器之间通信，并且保持数据的一致性；它提供了把与特定功能相关的方法集中在一起的接口
+1、创建：angular.module('myApp.services', [])
+.factory('githubService', function() {
+    var serviceInstance = {}; 
+    // 我们的第一个服务，返回serviceInstance;
+});
+2、使用：可以在控制器、指令、过滤器或另外一个服务中通过依赖声明的方式来使用服务
+angular.module('myApp', ['myApp.services'])
+.controller('ServiceController', function($scope, githubService) {
+    // 可以在对象上调用events函数
+    $scope.events = githubService.events('auser');
+});
+
+指令，服务，依赖注入，模块，控制器，过滤器，路由（一切都是从模块开始的）
+
+$watch和$digest
+
+$watch和$digest相辅相成，其中$watch在scope上添加一个监听器，监听scope上数据的变化
+创建$watch:
+提供以下两个函数：一是监控函数，指定所关注的那部分数据
+               二是监听函数，用于在数据变更的时候接受提示
+
+
+脏值检测：$digest的作用是调用这个监控函数，将它的返回值与上一次的返回值进行比较，如果不一样，就执行监听函数
+$eval-在作用域的上下文执行代                                         码
+Scope.prototype.$eval=function(expr,locals){
+    return exper(this,locals);
+}
+$apply-集成外部代码与digest循环
+
+
+得到焦点的时候：不校验，
+失去焦点的时候校验，
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+.boxShadow(@shadow:0 -0.15rem 0 0 @orange-dark inset){
+	 -moz-box-shadow: @shadow; 
+	 -webkit-box-shadow: @shadow; 
+	 box-shadow: @shadow;
+}
+.u-btn{
+	padding:0.65rem 1.3rem;background-color: @btn-orange;display:inline-block;border: 0.025rem solid @btn-orange;
+	border-radius: 1rem;font-size:@font-normal;color:@orange;.boxShadow;outline: none;
+}
+.u-btn:visited,.u-btn:hover{
+	color:@orange;
+}

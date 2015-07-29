@@ -2,3 +2,6 @@ readme.txt
 .gitignore
 bootstrap-3/
 .DS_Store
+.idea
+bower_components
+node_modules

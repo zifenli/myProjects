@@ -1,0 +1,30 @@
+<hr/>
+<h3>Route : List.html</h3>
+<user-info etitle="title">{{mytext}}</user-info>
+<clickable></clickable>
+<h3>Validate:{{isvalidate}}</h3>
+<h3>Auther:{{name}}</h3>
+<ul>
+<li ng-repeat="item in persons.person">
+<a href="#/list/{{ item }}"> ID{{ item.userid }},name{{item.username}},person info{{item.userinfo}}</a>
+</li>
+</ul>
+<ul>
+	<li>
+		First name：<input ng-model="user.firstName"/><br/>
+		Last  name：<input ng-model="user.lastName"/> <br/>
+	</li>
+	<li>
+		First name：{{user.firstName}} Last  name：{{user.lastName}} <br/>
+	</li>
+	<li>
+		Fullname：{{user | flFullname}}<br/>
+		Fullname：{{user | flFullname:"－"}}<br/>
+		Fullname：{{user | flFullname:"•" | uppercase }}
+	</li>
+</ul>
+ Outside myDirective: {{ mydata.name }}
+ <input type="text" ng-model="mark">
+<div my-directive myfn="myFn(name)">
+    Inside myDirective: {{ myProperty }}
+</div>

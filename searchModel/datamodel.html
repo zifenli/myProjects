@@ -1,0 +1,194 @@
+
+<<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+//text radio checkbox select
+//姓名、性别（男、女）、手机号、城市、公司、职务
+
+var data={
+	"dataList":[
+		{
+			"title":"评价XXX",
+			"content":{
+				"type":"1",
+				"name":"XXX",
+				"inpname":"XXX",
+				"selects":[
+						{"value":"极好","imgvalue":"excellect","imgurl":"grey","fcolor":"#666","index":"0"},
+						{"value": "好", "imgvalue": "good", "imgurl": "grey", "fcolor": "#666","index": "1"},
+	                    {"value": "一般", "imgvalue": "soso", "imgurl": "grey","fcolor": "#666", "index": "2"},
+	                    {"value": "差", "imgvalue": "poor", "imgurl": "grey", "fcolor": "#666","index": "3"},
+	                    {"value": "没意见", "imgvalue": "na", "imgurl": "grey", "fcolor": "#666","index": "4"}
+					]
+				}
+		},
+		{
+			"title":"XXX",
+			"content":{
+				"type":"2",
+				"name":"XXX",
+				"selects":[
+					{"value": "男Male", "imgurl": "unchecked", "fcolor": "#666"},
+					{"value": "女Male", "imgurl": "unchecked", "fcolor": "#666"}]
+			}
+		},
+		{
+			"title":"XXX",
+			"index":"",
+			"content":{
+				"type":"3",
+				"name":"",
+				"selects":[
+					{"value": "专业体适能教练证书（PFT）", "imgurl": "unchecked", "fcolor": "#666"},
+					{"value": "专业体适能教练证书（PFT）", "imgurl": "unchecked", "fcolor": "#666"}
+					]
+			}
+		},
+		{
+			"title":"XXX",
+			"index":"",
+			"content":{
+				"type":"4",
+				"name":"",
+				"selects":[
+					{"value": "AASFP 微信 AASFP Wechat", "imgurl": "unchecked", "fcolor": "#666", "index": "11"},
+					{"value": "报纸杂志...", "imgurl": "unchecked", "fcolor": "#666", "index": "11","text":"xxxxxx"}
+				]
+			}
+		},{
+			"title":"XXX",
+			"content":{
+				"type":"4",
+				"value":"xxxx"
+			}
+		},
+		{
+			"title":"",
+			"index":"",
+			"type":"5",
+			"content":
+			[{
+                    "type": 1,
+                    "name": "位置Location",
+                    "inpname": "location",
+                    "selects": [
+                        {"value": "极好", "imgvalue": "excellent", "imgurl": "grey", "fcolor": "#666","index": "0"},
+                        {"value": "好", "imgvalue": "good", "imgurl": "grey", "fcolor": "#666","index": "1"},
+                        {"value": "一般", "imgvalue": "soso", "imgurl": "grey","fcolor": "#666", "index": "2"},
+                        {"value": "差", "imgvalue": "poor", "imgurl": "grey", "fcolor": "#666","index": "3"},
+                        {"value": "没意见", "imgvalue": "na", "imgurl": "grey", "fcolor": "#666","index": "4"}
+                    ]
+            },{
+                    "type": 4,
+                    "index": 5,
+                    "name": "其它意见Any other comments"
+
+            }]
+		},
+		{
+			"title":"",
+			"content":{
+				"type":"6",
+				"name":"",
+				"options":[
+					{},{}
+				]
+			}
+		}
+	]
+}
+
+//如果定义一个框架，那如何将数据填进去呢？比如调查问卷：
+//[姓名，性别、手机号、城市、公司、职务、学员号]
+var realdata={"realdatalist":[
+		
+		{
+		 "title":"姓别hhh",
+		 "name":"sex",
+		 "type":"2",
+		 "selects":["男","女","孩子"]
+		}
+	]}
+function tomodel(realdata,data){
+
+	var realdatalist=realdata.realdatalist;
+	var origindatalist=data.dataList;
+	var resultdata=null;
+	//遍历realdata的每一项，
+	for(var i=0;i<realdatalist.length;i++){
+
+			resultdata=matchitem(realdatalist[i],origindatalist);
+		
+	}
+	console.log(resultdata);
+}
+function matchitem(realdataitem,origindatalist){
+	
+	var type=realdataitem.type;
+	//遍历origindatalist的每一项
+	for(var i=0;i<origindatalist.length;i++){
+		//分为两种情况:type=5和其他情况
+		if(origindatalist[i].type && origindatalist[i].type==type){
+			return formatitem(realdataitem,origindatalist[i]);
+		}else{
+			if(origindatalist[i].content.type==type){
+				return formatitem(realdataitem,origindatalist[i]);
+			}
+		}
+	}
+}
+function formatitem(realitem,originitem){
+	var item=originitem;
+	item.title=realitem.title;
+	console.log(originitem);
+	//除了title之外，要添加或修改其他的属性
+	//然后根据每一项的type来确定是否有其他项需要改变
+	switch(parseInt(realitem.type)){
+		case 1:
+			//是单选评分，要修改的时它的title，type的位置，以及选项的内容，以及添加选项的index
+			console.log(realitem.type);
+			break;
+
+		case 2:
+			//是单选，要修改的时它的name，以及value，以及添加选项的index
+			item.content.name=realitem.name;
+			item.content.selects.length=realitem.selects.length;
+			for(var i=0;i<item.content.selects.length;i++){
+
+				item.content.selects[i]=item.content.selects[0];
+				console.log(item.content.selects[i]);
+				item.content.selects[i].value=realitem.selects[i];
+				
+			}
+			
+			break;
+
+		case 3:
+			console.log(realitem.type);
+			break;
+
+		case 4:
+			console.log(realitem.type);
+			break;
+
+		case 5:
+			console.log(realitem.type);
+			break;
+
+		case 6:
+			console.log(realitem.type);
+			break;
+	}
+	return item;
+}
+tomodel(realdata,data);
+//总共有单选、多选、text、select、单选+text、多选+text、大题（里面有多个小题，这些小题可能是单选，多选，text等等）
+</script>
+</body>
+</html>

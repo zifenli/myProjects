@@ -26,17 +26,60 @@ function SearchModel(targetObj,showList,dataProvider,config){
 		},
 		config
 		);            
-	
+	var self=this;
 	//组件的DOM组成部分,其实就是$(inputId);
 	this.target=targetObj;  
 	this.showList=showList;             
 	//关闭自动完成功能
 	this.target.setAttribute("autocomplete", "off");
 	//数据来源
-	this.dataService = dataProvider;            	
+	this.dataService =self.getData();            	
 	//当前选中对象
 	this.currObj;
-	var self=this;
+	
+	//如果数据是从远程服务器上取得的，则先取出数据，然后再将数据组织成需要的格式，最后将得到的数据赋值给dataService 
+	//dataProvider有两种形式JSON和url，如果为JSON直接将值赋给dataService即可
+	this.getxmlHttpObject=function(){
+		var xmlHttpRequest;
+		if(window.ActiveXObject){
+			xmlHttpRequest=new ActiveXObject("Microsoft.XMLHTTP");
+		}else{
+			xmlHttpRequest=new XMLHttpRequest();
+		}
+		return xmlHttpRequest;
+	}
+	this.getData=function(){
+		if(typeof(dataProvider)==object){
+			return;
+		}else{
+			
+			var myxmlHttpRequest=self.getxmlHttpObject();
+			if(myxmlHttpRequest){
+				var url=dataProvider;
+				//数据data 的形式如:"key=value",其中key=dataKey，value=self.target.value;
+				data=self.conf.dataKey.key+"="+self.target.value;
+				//打开页面一号线
+				myxmlHttpRequest.open("post",url,true);
+				//这句话在post请求时一定要加
+				myxmlHttpRequest.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				//指定回调函数,四号线
+				var mes=myxmlHttpRequest.onreadystatechange=function(){
+					if(myxmlHttpRequest.readyState==4){
+						var mes=myxmlHttpRequest.responseText;
+						var mes=eval("("+mes+")");
+						/*这里添加处理代码
+
+						*/
+						return mes;
+					}
+				}
+				//真正发送,二号线
+				myxmlHttpRequest.send(data);
+				dataProvider=mes;
+			}
+
+		}
+	}
 	//为输入框和显示框设置样式
 	this.setStyle=function(){
 		var deftargetCss="width: 300px;";
@@ -275,7 +318,7 @@ var data={
 	]};
 var myconfig={
 	//"className":"showDiv"
-	"dataneeded":{"name":"name","email":"email"},
+	"dataneeded":{"name":"name","email":"email","phonenumber":"phonenumber"},
 	"datashowform":"people-template"
 };
 var mysearch=new SearchModel($("searchInput"),$("showList"),data,myconfig);
