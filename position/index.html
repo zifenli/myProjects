@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试position</title>
+    <link rel="stylesheet" href="../bootstrap-3.3.6-dist/css/bootstrap.min.css">
+    <style>
+        div,table {
+            display: inline-block;
+            margin: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body ng-app="positionApp" ng-controller="positionCtrl">
+<div style="border:1px solid #aaa">
+    <position  id="test1" title="no positioned positioned parent" style="border:1px solid #aaa"></position>
+</div>
+
+
+<div style="position: relative;top:20px;left: 10px; border:1px solid #aaa">
+    <position  id="test2" title="relative parent" style="border:1px solid #aaa"></position>
+</div>
+
+<div style="position: absolute;top:10px;left: 700px; border:1px solid #aaa">
+    <position  id="test3" title="absolute parent" style="border:1px solid #aaa"></position>
+</div>
+</body>
+<script type="text/ng-template" id="/position.html">
+    <table class="table" >
+        <thead>
+        <th colspan="2">{{title}}</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="field in ['width', 'height', 'left', 'top']">
+            <td>{{field}}</td>
+            <td>{{data[field] | number}}</td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+<script src="../angular-1.5.2/angular.js"></script>
+<script src="./position.js"></script>
+<script src="./main.js"></script>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html ng-app="uiRouterTest">
+<head>
+    <meta charset="UTF-8">
+    <title>ui-router测试</title>
+</head>
+<body>
+<ul>
+    <li><a ui-sref="home">home</a></li>
+    <li><a ui-sref="users.list">users</a></li>
+    <li><a ui-sref="about">about</a></li>
+</ul>
+
+<div ui-view>
+
+</div>
+<div ui-view="hint">
+
+</div>
+<script src="js/angular.js"></script>
+<script src="js/angular-ui-router.js"></script>
+<script src="app.js"></script>
+<script src="users.js"></script>
+</body>
+</html>
